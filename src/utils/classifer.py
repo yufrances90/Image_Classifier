@@ -36,6 +36,34 @@ class Classifier:
 
         self.device = device
 
+    @classmethod
+    def generate_classifier_by_checkpoint(cls, checkpoint, arch, device):
+
+        classifier = cls.__new__(cls)
+
+        model = models.__dict__[arch](pretrained=True)
+
+        model.classifier = checkpoint['classifier']
+
+        model.load_state_dict(checkpoint['state_dict'])
+
+        model.to(device)
+
+        classifier.model = model
+
+        return classifier
+
+    def predict(self, image_tensor, topk):
+
+        with torch.no_grad():
+    
+            ps = self.model(image_tensor)
+
+            top_p, top_class = ps.topk(topk, dim=1)
+        
+            return (top_p/100).numpy().squeeze(), (top_class+1).numpy().squeeze()
+
+
     def get_trained_classifier(self):
 
         self.model.to(torch.device("cpu"))

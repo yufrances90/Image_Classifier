@@ -56,11 +56,11 @@ class IO:
 
         if not train:
 
-            parser.add_argument("checkpoint", type=str,
-                        help="Checkpoint")
-
             parser.add_argument("image_path", type=str,
                         help="/path/to/image")
+
+            parser.add_argument("checkpoint", type=str,
+                        help="Checkpoint File Path")
 
         # Use GPU for inference
 
@@ -100,6 +100,10 @@ class IO:
 
         torch.save(checkpoint, file_path)
 
+    
+    @staticmethod
+    def load_checkpoint(checkpoint_file_path):
+        return torch.load(checkpoint_file_path)
 
 
     def __get_dataloaders(self, datasets):
