@@ -20,8 +20,11 @@ def main():
 
     probs, classes = classifier.predict(image_tensor, in_arg.top_k, checkpoint['class_to_idx'])
 
+    labels = [category_names[cls] for cls in classes]
+
     print(probs)
     print(classes)
+    print(labels)
 
 if __name__ == "__main__":
     main()
