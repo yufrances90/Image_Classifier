@@ -1,5 +1,6 @@
 from utils.io import IO
 from utils.classifer import Classifier
+from utils.image import ImageUtils
 
 def main():
 
@@ -13,7 +14,14 @@ def main():
 
     classifier = Classifier.generate_classifier_by_checkpoint(checkpoint, in_arg.arch, device)
 
-    print(classifier.model)
+    image = IO.load_image(in_arg.image_path)
+
+    image_tensor = ImageUtils.get_image_tensor(image)
+
+    probs, classes = classifier.predict(image_tensor, in_arg.top_k, checkpoint['class_to_idx'])
+
+    print(probs)
+    print(classes)
 
 if __name__ == "__main__":
     main()

@@ -53,15 +53,19 @@ class Classifier:
 
         return classifier
 
-    def predict(self, image_tensor, topk):
+    def predict(self, image_tensor, topk, class_dict):
 
         with torch.no_grad():
     
             ps = self.model(image_tensor)
 
             top_p, top_class = ps.topk(topk, dim=1)
-        
-            return (top_p/100).numpy().squeeze(), (top_class+1).numpy().squeeze()
+            
+            cls_list = [element.item() for element in top_class.flatten()]
+            
+            classes = [self.__get_label_by_class(cl, class_dict) for cl in cls_list]
+            
+            return (top_p/100).numpy().squeeze(), classes
 
 
     def get_trained_classifier(self):
@@ -131,6 +135,9 @@ class Classifier:
                     "Train Loss: {:.3f}.. ".format(train_p),
                     "Valid Loss: {:.3f}.. ".format(valid_p),
                     "Valid Accuracy: {:.3f}".format(accuracy/len(validloader)))
+
+    def __get_label_by_class(self, cl, class_dict):
+        return list(class_dict.keys())[list(class_dict.values()).index(cl)]
 
     def __initialize_model(self, arch, hidden_units, output_units):
 

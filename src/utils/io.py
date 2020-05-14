@@ -2,6 +2,7 @@ import argparse
 import torch
 from torchvision import transforms, datasets
 import json
+from PIL import Image
 
 class IO:
 
@@ -104,6 +105,11 @@ class IO:
     @staticmethod
     def load_checkpoint(checkpoint_file_path):
         return torch.load(checkpoint_file_path)
+
+    
+    @staticmethod
+    def load_image(image_path):
+        return Image.open(image_path)
 
 
     def __get_dataloaders(self, datasets):
