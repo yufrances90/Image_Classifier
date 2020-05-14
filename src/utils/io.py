@@ -93,9 +93,12 @@ class IO:
         return IO.__get_dataloaders(IO, datasets)
 
     
-    # @staticmethod
-    # def save_trained_model(trained_model, class_to_idx):
+    @staticmethod
+    def save_checkpoint(checkpoint, save_dir):
 
+        file_path = f'{save_dir}checkpoint.pth'
+
+        torch.save(checkpoint, file_path)
 
 
 

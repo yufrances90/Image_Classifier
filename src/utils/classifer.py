@@ -30,11 +30,16 @@ class Classifier:
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.SGD(self.model.classifier.parameters(), lr=learning_rate)
 
+        self.learning_rate = learning_rate
+
         self.epochs = epochs
 
         self.device = device
 
     def get_trained_classifier(self):
+
+        self.model.to(torch.device("cpu"))
+
         return {
             'classifier': self.model.classifier,
             'state_dict': self.model.state_dict(),
